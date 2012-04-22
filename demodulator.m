@@ -20,8 +20,16 @@ STOP_FREQ = 450; %Hz
 
 FFT_LEN = 256;
 
+w = zeros(10,1); %[0.21; 0.45; 0.72; 0.85; 1; 1; 0.85; 0.72; 0.45; 0.21];
+
+% construct a Hamming window for use with STFT
+for i = 0:9
+   w(i+1) = 0.54-0.46*cos(2*pi*i/9); 
+end
+
 %% Read in .wav file
 [signal, fs, ~] = wavread(wavFile);
+
 %% Time Domain Plot
 figure(1)
 t = 1/fs.*(0 : length(signal)-1);
@@ -47,9 +55,10 @@ img = zeros(img_width,img_height);
 for i=1:img_height
     for j=1:img_width
         start_index = 10*((i-1)*img_width + (j-1) ) + 1;
-        Y = fft(signal(start_index:start_index+9),FFT_LEN);
-        freq = f(find(Y == max(Y(1:(FFT_LEN/2)))));
-        color = (freq - BLACK)/(WHITE-BLACK);
+        chunk = signal(start_index:start_index+9).*w;
+        Y = fft(chunk,FFT_LEN);
+        freq = f(Y == max(Y(1:(FFT_LEN/2))));
+        color = min((freq - BLACK)/(WHITE-BLACK),1);
         img(i,j) = color;
     end
 end
