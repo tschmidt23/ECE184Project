@@ -1,5 +1,8 @@
 function impairment_AWGN(inFile, outFile, SNR)
-%impairment_AWGN
+%IMPAIRMENT_AWGN Adds AWGN noise to the specified WAVE file.
+%   IMPAIRMENT_AWGN(IN, OUT, SNR) takes in a .wav file and adds additive
+%   white Gaussian noise to that WAVE file such that the output file has a
+%   signal-to-noise power ratio of SNR in dB.
 
 [signal, Fs, N] = wavread(inFile);
 
