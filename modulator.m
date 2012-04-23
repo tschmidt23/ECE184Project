@@ -33,7 +33,7 @@ width = size(img, 2);
 start_signal = zeros(1,START_TIME*WAV_FS);
 phi = 0;
 freq = WHITE;
-TS = 1/START_FREQ;
+TS = 1/(2*START_FREQ);
 time = 0;
 
 for i = 1:size(start_signal,2)
@@ -57,6 +57,20 @@ end
 wavwrite(start_signal,WAV_FS,WAV_NBITS,'start.wav');
 
 start_signal(1:320)
+
+%% generate chirps
+chirp = zeros(8000,1);
+phi = 0;
+for i=1:7600
+    chirp(i) = 0.99*cos(phi);
+    phi = phi + 2*pi*BLACK*WAV_TS;
+end
+for i=7601:8000
+   chirp(i) = 0.99*cos(phi)
+   phi = phi +2*pi*WHITE*WAV_TS;
+end
+chirp = repmat(chirp,40,1);
+wavwrite(chirp,WAV_FS,WAV_NBITS,'chirp.wav');
 
 %% Modulate Image
 phi = 0;
