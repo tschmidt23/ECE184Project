@@ -1,23 +1,21 @@
 function impairment_AWGN(inFile, outFile, SNR)
 %IMPAIRMENT_AWGN Adds AWGN noise to the specified WAVE file.
-%   IMPAIRMENT_AWGN(IN, OUT, SNR) takes in a .wav file and adds additive
-%   white Gaussian noise to that WAVE file such that the output file has a
-%   signal-to-noise power ratio of SNR in dB.
+%   IMPAIRMENT_AWGN(IN, OUT, SNR) takes in a .wav file at path IN and adds
+%   additive white Gaussian noise to that WAVE file such that the output
+%   file at OUT has a signal-to-noise power ratio of SNR in decibels.
 
+% Read in WAVE file
 [signal, Fs, N] = wavread(inFile);
-
 len = length(signal);
 
-nfft = 2^nextpow2(len);
-Pxx = abs(fft(signal,nfft)).^2/len/Fs;
-Hpsd=dspdata.psd(Pxx,'Fs',Fs);
-    
-Psignal = avgpower(Hpsd);
-Pnoise = Psignal / SNR;
-    
-impaired_signal = signal + randn(len,1).*sqrt(Pnoise/2);
-impaired_signal = 0.99.*impaired_signal./max(impaired_signal);
+% Calculate Signal and Noise Power
+Psig = sum(abs(signal) .^ 2) / len;
+Pnoise = Psig / SNR;
 
-wavwrite(impaired_signal,Fs,N,outFile);
+% Add noise to signal
+y = signal + randn(len, 1) .* sqrt(Pnoise / 2);
 
+% Normalize and write out
+impaired_signal = 0.99 .* y ./ max(abs(y));
+wavwrite(impaired_signal, Fs, N, outFile);
 end

@@ -1,4 +1,4 @@
-function rt = impairment_fading(inFile, outFile, variance)
+function impairment_fading(inFile, outFile, variance)
 %IMPAIRMENT_FADING Adds Rayleigh Fading to a WAVE file
 %   IMPAIRMENT_FADING(IN,OUT,VAR) adds frequency nonselective Rayleigh
 %   fading to the WAVE file at IN with variance equal to VAR and writes the
