@@ -5,7 +5,7 @@ function demodulator( wavFile, imgFile )
 %   16-bit, single channel WAVE file sampled at 16KHz in proper NOAA
 %   Weather Fax Format.
 %
-%   See also MODULATOR
+%   See also MODULATOR, START_DETECTOR, STOP_DETECTOR
 
 %% Constants
 WAV_FS = 16000; %Hz

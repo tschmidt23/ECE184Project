@@ -7,24 +7,26 @@ function [stop_index] = stop_detector(signal)
 %   peaks, and find the location of the highest value within each band. If
 %   we go a number of samples while observing peaks separated by 450Hz,
 %   we have reached the beginning of the stop signal.
+%
+%   See also START_SIGNAL, DEMODULATOR
 
-%% constants
+%% Constants
 WAV_FS = 16000;
 FFT_LEN = 1024;
 MAX_DEVIATION = 15;
 MIN_CONSECUTIVE = 1000;
 PEAK_SEPARATION = 450;
 
-%% setup
+%% Setup
 
 f = (0:(FFT_LEN-1))*(WAV_FS/FFT_LEN);
 w = hamming(FFT_LEN);
 
 % look for peaks in these four frequency bands (characteristic of start
 % signal)
-peak_i = [ find(f > 900,1) find(f > 1300, 1);...
-           find(f > 1350,1) find(f > 1750, 1);...
-           find(f > 1800,1) find(f > 2200, 1);...
+peak_i = [ find(f > 900, 1) find(f > 1300, 1); ...
+           find(f > 1350,1) find(f > 1750, 1); ...
+           find(f > 1800,1) find(f > 2200, 1); ...
            find(f > 2250,1) find(f > 2650, 1)];
              
 found_start = 0;
@@ -32,7 +34,7 @@ index = 0;
 consecutive = 0;
 first_valid = 0;
 
-%% find the beginning of the stop signal
+%% Find the beginning of the stop signal
 while (~found_start)
     % if the last sample looked good, increment by 1
     if (consecutive)
@@ -49,7 +51,8 @@ while (~found_start)
               max(Y(peak_i(3,1):peak_i(3,2)));...
               max(Y(peak_i(4,1):peak_i(4,2)))];
     % frequencies of the peaks
-    peak_freqs = [f(Y==peaks(1)); f(Y==peaks(2)); f(Y==peaks(3)); f(Y==peaks(4))];
+    peak_freqs = [f(Y==peaks(1)); f(Y==peaks(2)); ...
+                  f(Y==peaks(3)); f(Y==peaks(4))];
     % separation of the peaks
     separation = [peak_freqs(2)-peak_freqs(1);...
                   peak_freqs(3)-peak_freqs(2);...
