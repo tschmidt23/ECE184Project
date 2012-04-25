@@ -95,5 +95,5 @@ end
 % the actual end of the start signal is a little beyond the last valid
 % index, and was empirically determined to be about 2/3 of the number of
 % samples used in the STFT.
-start_index = last_valid + SAMPLE_LEN*2/3;
+start_index = last_valid + round(SAMPLE_LEN*2/3);
 end

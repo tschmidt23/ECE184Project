@@ -25,13 +25,13 @@ SKIP_SAMPLES = 880000;
 %% Extract pixel data between start and stop signals
 signal_start = start_detector(signal);
 signal_stop = signal_start + SKIP_SAMPLES + ...
-    stop_detector(signal(signal_start+SKIP_SAMPLES:length(signal)));
+    stop_detector(signal( signal_start + SKIP_SAMPLES : length(signal)));
 signal = signal(signal_start : signal_stop);
 
 %% Demodulate the image data
 len = length(signal);
-img_pixels = len/SAMP_PIX;
-img_height = img_pixels/IMG_WIDTH;
+img_pixels = len / SAMP_PIX;
+img_height = round(img_pixels/IMG_WIDTH);
 
 % Range of frequencies in the FFT
 f = (0:(FFT_LEN - 1)) * (WAV_FS / FFT_LEN);
@@ -41,8 +41,8 @@ win = hamming(10);
 img = zeros(IMG_WIDTH, img_height);
 
 % Extract a pixel at a time using fft of 10 samples and the hamming window
-for i=1:img_height
-    for j=1:IMG_WIDTH
+for i = 1 : img_height
+    for j= 1 : IMG_WIDTH
         start_index = SAMP_PIX*((i-1)*IMG_WIDTH + (j-1) ) + 1;
         chunk = signal(start_index : start_index + SAMP_PIX - 1) .* win;
         Y = fft(chunk, FFT_LEN);
