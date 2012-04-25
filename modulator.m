@@ -5,6 +5,8 @@ function modulator(imgFile, wavFile)
 %   with sampling frequency, fs = 16 KHz. The .wav file will be formatted
 %   according to the NOAA Marine Weather Fax Format (HF Fax) and will be
 %   written to the path specified by OUT.
+%
+%   See also DEMODULATOR
 
 %% Constants
 WAV_FS = 16000; %Hz
