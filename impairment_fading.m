@@ -1,18 +1,30 @@
-function impairment_fading(inFile, outFile, variance)
-%impairment_fading
+function rt = impairment_fading(inFile, outFile, variance)
+%IMPAIRMENT_FADING Adds Rayleigh Fading to a WAVE file
+%   IMPAIRMENT_FADING(IN,OUT,VAR) adds frequency nonselective Rayleigh
+%   fading to the WAVE file at IN with variance equal to VAR and writes the
+%   resultant signal to a WAVE file at OUT. Rayleigh fading is added on a
+%   per sample basis, and so the number of samples in IN equals the number
+%   of samples in OUT.
 
+% Read in WAVE file
 [signal, Fs, N] = wavread(inFile);
-
 len = length(signal);
 
-alpha = raylrnd(1:len)'.*sqrt(variance);
-phi = rand(len,1).*2*pi;
+% Distribution Parameters
+mu = zeros(1, len);
+sigma = sqrt(variance);
 
-c = alpha.*exp(1i*phi);
+% Generate Gaussians
+cr = normrnd(mu, sigma);
+ci = normrnd(mu, sigma);
 
-impaired_signal = signal.*c;
-impaired_signal = 0.99.*impaired_signal./max(impaired_signal);
+% Calculate Rayleigh Parameters
+alpha = sqrt(cr.^2 + ci.^2);
+phi = atan(ci / cr);
 
-wavwrite(impaired_signal,Fs,N,outFile);
+ct = alpha.*exp(1j*phi);
+rt = ct.*signal';
 
+%Normalize and write out
+wavwrite(.99.*rt./max(abs(rt)), Fs, N, outFile);
 end
