@@ -21,34 +21,31 @@ STOP_FREQ = 450; %Hz
 
 FFT_LEN = 256;
 
+SKIP_SAMPLES = 880000;
+
 %% Functions
-HamWindow = @(n, N) .54-.46*cos(2*pi.*n/(N-1));
-w = HamWindow(0:SAMP_PIX - 1, SAMP_PIX)';
+w = hamming(10);
 
 %% Read in .wav file
 [signal, fs, ~] = wavread(wavFile);
 
-%% Time Domain Plot
-figure(1)
-t = 1/fs.*(0 : length(signal)-1);
-plot(t, signal')
-xlabel('t seconds'); ylabel('signal')
+%% Extract pixel data between start and stop signals
+signal_start = start_detector(signal)
+signal_stop = signal_start+SKIP_SAMPLES + ...
+    stop_detector(signal(signal_start+SKIP_SAMPLES:length(signal)))
+signal = signal(signal_start:signal_stop);
 
-%% Frequency Domain Plot
-[f, y] = formattedFourier(t, 1./fs, signal);
-
-figure(2)
-plot(f, y);
-xlabel('Frequency Hz'); ylabel('FFT signal')
-
+%% Demodulate the image data
 len = length(signal);
 img_pixels = len/SAMP_PIX;
 img_height = img_pixels/IMG_WIDTH;
 
+% range of frequencies in the FFT
 f = (0:(FFT_LEN-1))*(WAV_FS/FFT_LEN);
 
 img = zeros(IMG_WIDTH, img_height);
 
+% extract a pixel at a time using fft of 10 samples and the hamming window
 for i=1:img_height
     for j=1:IMG_WIDTH
         start_index = SAMP_PIX*((i-1)*IMG_WIDTH + (j-1) ) + 1;
@@ -64,9 +61,3 @@ imwrite(img,imgFile);
 
 end
 
-function [f,Y] = formattedFourier(t, ts, func)
-L = length(t);
-NFFT = 2^nextpow2(L);
-Y = 2* abs(fftshift(fft(func,NFFT)/length(t)));
-f = (1/ts)/2*linspace(-1,1,NFFT);
-end
