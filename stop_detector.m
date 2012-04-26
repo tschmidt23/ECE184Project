@@ -13,8 +13,8 @@ function [stop_index] = stop_detector(signal)
 %% Constants
 WAV_FS = 16000;
 FFT_LEN = 1024;
-MAX_DEVIATION = 15;
-MIN_CONSECUTIVE = 1000;
+MAX_DEVIATION = 20;
+MIN_CONSECUTIVE = 8000;
 PEAK_SEPARATION = 450;
 
 %% Setup

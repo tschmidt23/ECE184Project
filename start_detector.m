@@ -15,7 +15,7 @@ function start_index = start_detector(signal)
 WAV_FS = 16000;
 FFT_LEN = 2048;
 SAMPLE_LEN = 512;
-REL_PEAK_THRESH = 0.5;
+REL_PEAK_THRESH = 3;
 SKIP_SAMPLES = 3 * WAV_FS;
 MAX_DEVIATION = 10;
 MAX_CONSECUTIVE = 20;
@@ -37,7 +37,7 @@ index = 0;
 
 %% Find beginning of start signal
 while (~found_start)
-    index = index + 1;
+    index = index + 100;
     % windowed fft
     Y = abs(fft(w.*signal(index:index+SAMPLE_LEN-1),FFT_LEN));
     % vector of the the peaks in the four bands

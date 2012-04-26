@@ -3,7 +3,7 @@
 % 184 term project. Generated files are moved to a zip archive for turn-in.
 
 %% Setup
-TEAM_NAME = 'EMMA';
+TEAM_NAME = 'FOR_EMMA';
 test1 = 'demodtest1.wav';
 test2 = 'demodtest2.wav';
 mtest1 = 'modtest1.jpg';
@@ -33,7 +33,7 @@ impairment_fading(test1, strcat(TEAM_NAME, '_FADE.wav'), .5);
 impairment_multipath(test1, strcat(TEAM_NAME, '_ECHO.wav'), 3, 50);
 
 %% Turn in (UNIX)
-DONE = 0;
+DONE = 1;
 
 if(DONE && isunix)
     dir = [TEAM_NAME, '_turnin'];

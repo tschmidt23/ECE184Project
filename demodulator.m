@@ -31,7 +31,7 @@ signal = signal(signal_start : signal_stop);
 %% Demodulate the image data
 len = length(signal);
 img_pixels = len / SAMP_PIX;
-img_height = round(img_pixels/IMG_WIDTH);
+img_height = floor(img_pixels/IMG_WIDTH);
 
 % Range of frequencies in the FFT
 f = (0:(FFT_LEN - 1)) * (WAV_FS / FFT_LEN);

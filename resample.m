@@ -1,4 +1,4 @@
-data = wavread('OTA_grayscale_sat_image.wav');
+data = wavread('demodtest2.wav');
 full_chunks = floor(length(data)/32000);
 out_data = [];
 for i = 1:full_chunks
@@ -6,4 +6,4 @@ for i = 1:full_chunks
 end
 out_data = [out_data; data(32000*full_chunks+1:length(data))];
 
-wavwrite(out_data,16000,16,'OTA_resampled.wav');
+wavwrite(out_data,16000,16,'FOR_EMMA_demodtest2_resampled.wav');
