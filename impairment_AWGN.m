@@ -10,7 +10,7 @@ len = length(signal);
 
 % Calculate Signal and Noise Power
 Psig = sum(abs(signal) .^ 2) / len;
-Pnoise = Psig / SNR;
+Pnoise = Psig / 10^(SNR/10);
 
 % Add noise to signal
 y = signal + randn(len, 1) .* sqrt(Pnoise / 2);

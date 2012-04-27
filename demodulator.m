@@ -38,7 +38,7 @@ f = (0:(FFT_LEN - 1)) * (WAV_FS / FFT_LEN);
 % Generate Hamming Window
 win = hamming(10);
 
-img = zeros(IMG_WIDTH, img_height);
+img = zeros(img_height, IMG_WIDTH);
 
 % Extract a pixel at a time using fft of 10 samples and the hamming window
 for i = 1 : img_height

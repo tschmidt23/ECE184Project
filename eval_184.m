@@ -5,7 +5,7 @@
 %% Setup
 TEAM_NAME = 'FOR_EMMA';
 test1 = 'demodtest1.wav';
-test2 = 'demodtest2.wav';
+test2 = [TEAM_NAME '_demodtest2_resampled.wav'];
 mtest1 = 'modtest1.jpg';
 mtest2 = 'modtest2.jpg';
 dogfood = 'modtest3.jpg';
